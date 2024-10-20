@@ -21,6 +21,7 @@ jobs:
       run: npm ci
 
     - name: Generate Prisma client
+      run: cd apps/fitdiary-api
       run: npx prisma generate
 
     - name: Build project
