@@ -3,8 +3,8 @@ name: Deploy to VDS
 on:
   push:
     branches:
-         - main
-         - deploy
+      - main
+      - deploy
 
 jobs:
   deploy:
@@ -20,6 +20,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Generate Prisma client
+      run: npx prisma generate
+
     - name: Build project
       run: npm run build
 
@@ -30,7 +33,7 @@ jobs:
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
         source: ".,!node_modules"
-        target: "/fitdiary-api"
+        target: "/path/to/your/project"
 
     - name: Deploy to VDS
       uses: appleboy/ssh-action@master
@@ -39,7 +42,7 @@ jobs:
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
-          cd /fitdiary-api
+          cd /path/to/your/project
           docker-compose down
           docker-compose up --build -d
-          docker-compose exec api npx prisma migrate deploy
+          docker-compose exec -T api npx prisma migrate deploy
