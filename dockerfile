@@ -22,7 +22,7 @@ FROM node:23-alpine
 WORKDIR /app
 
 # Копируем собранное приложение из этапа сборки
-COPY --from=builder /app/dist/apps/fitdiary-api ./dist
+COPY --from=builder /app/fitdiary-api/dist ./dist
 
 # Копируем package.json и package-lock.json
 COPY package*.json ./
