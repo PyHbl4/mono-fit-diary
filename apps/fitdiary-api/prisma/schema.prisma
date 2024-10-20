@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  uuid      String @default(uuid()) @id
+  login     String @unique
+  email     String? @unique
+  phone     String? @unique
+  password  String
+  scopes    String[]
+  name      String
+  gender    String?
+  birthDate DateTime?
+  sessionId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workouts Workouts[]
+  weightData WeightData[]
+  exerciseGroups ExerciseGroups[]
+  exercises Exercises[]
+}
+
+model Workouts {
+  uuid        String   @id @default(uuid())
+  userId      String
+  name        String?
+  description String?
+  user        Users    @relation(fields: [userId], references: [uuid])
+  date        DateTime
+  duration    Int?
+  calories    Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sets Sets[]
+}
+
+model Exercises {
+  uuid        String   @id @default(uuid())
+  name        String
+  description String
+  userId      String
+  user        Users    @relation(fields: [userId], references: [uuid])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sets Sets[]
+  exerciseGroups ExerciseGroups[]
+}
+
+model Sets {
+  uuid       String   @id @default(uuid())
+  workoutId  String
+  workout    Workouts @relation(fields: [workoutId], references: [uuid])
+  exerciseId String
+  exercise   Exercises @relation(fields: [exerciseId], references: [uuid])
+  counts     Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model WeightData {
+  uuid      String   @id @default(uuid())
+  userId    String
+  user      Users    @relation(fields: [userId], references: [uuid])
+  date      DateTime @default(now())
+  weight    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ExerciseGroups {
+  uuid        String   @id @default(uuid())
+  name        String
+  description String
+  userId      String
+  user        Users    @relation(fields: [userId], references: [uuid])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  exercises Exercises[]
+}
