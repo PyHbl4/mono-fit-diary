@@ -3,7 +3,8 @@ name: Deploy to VDS
 on:
   push:
     branches:
-      - deploy
+         - main
+         - deploy
 
 jobs:
   deploy:
