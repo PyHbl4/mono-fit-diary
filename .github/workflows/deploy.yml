@@ -47,6 +47,9 @@ jobs:
         script: |
           cd /path/to/your/project
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+          ls -la
+          cat .env
+          docker-compose config
           docker-compose down
           docker-compose up --build -d
           docker-compose exec -T api npx prisma migrate deploy
