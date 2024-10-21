@@ -4,7 +4,7 @@ services:
     image: postgres:17
     container_name: pg-fitdiary
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./server-pgdata/pgdata:/var/lib/postgresql/data
@@ -20,7 +20,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/fitdiary?schema=public
+      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD}@postgres:5432/fitdiary?schema=public
     depends_on:
       - postgres
     restart: unless-stopped

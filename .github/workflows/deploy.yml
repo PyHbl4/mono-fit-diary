@@ -34,6 +34,10 @@ jobs:
         source: ".,!node_modules"
         target: "/path/to/your/project"
 
+    - name: Create .env file
+      run: |
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+  
     - name: Deploy to VDS
       uses: appleboy/ssh-action@master
       with:
@@ -42,6 +46,7 @@ jobs:
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
           cd /path/to/your/project
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
           docker-compose down
           docker-compose up --build -d
           docker-compose exec -T api npx prisma migrate deploy
