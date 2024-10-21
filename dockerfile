@@ -14,6 +14,6 @@ WORKDIR /app
 # Копируем собранные файлы из правильной директории
 COPY --from=builder /app/apps/fitdiary-api/dist ./dist
 COPY --from=builder /app/apps/fitdiary-api/package*.json ./
-RUN npm ci --only=production
+RUN npm install
 EXPOSE 3000
 CMD ["node", "dist/main.js"]
