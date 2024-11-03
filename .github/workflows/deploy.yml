@@ -46,6 +46,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.VDS_HOST }}
+        port: ${{ secrets.VDS_PORT }}
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
