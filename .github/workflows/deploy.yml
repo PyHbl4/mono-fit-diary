@@ -25,13 +25,6 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Create .env file
-      run: |
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > apps/fitdiary-api/.env
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> apps/fitdiary-api/.env
-        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> apps/fitdiary-api/.env
-        echo "PORT=3000" >> apps/fitdiary-api/.env
-
     - name: Copy files to VDS
       uses: appleboy/scp-action@master
       with:
@@ -39,8 +32,22 @@ jobs:
         port: ${{ secrets.VDS_PORT }}
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
-        source: "apps/fitdiary-api/dist/*, apps/fitdiary-api/.env"
+        source: "apps/fitdiary-api/dist/*"
         target: "~/fit-diary-api"
+
+    - name: Create .env file on VDS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VDS_HOST }}
+        port: ${{ secrets.VDS_PORT }}
+        username: ${{ secrets.VDS_USERNAME }}
+        key: ${{ secrets.VDS_SSH_KEY }}
+        script: |
+          cd ~/fit-diary-api
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "PORT=3000" >> .env
 
     - name: Check files in target directory
       uses: appleboy/ssh-action@master
