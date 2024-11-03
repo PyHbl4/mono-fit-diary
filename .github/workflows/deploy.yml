@@ -42,6 +42,18 @@ jobs:
         source: "apps/fitdiary-api/dist/*, apps/fitdiary-api/.env"
         target: "~/fit-diary-api"
 
+    - name: Check files in target directory
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VDS_HOST }}
+        port: ${{ secrets.VDS_PORT }}
+        username: ${{ secrets.VDS_USERNAME }}
+        key: ${{ secrets.VDS_SSH_KEY }}
+        script: |
+          cd ~/fit-diary-api
+          ls -la  # Выводим содержимое директории
+          cat .env  # Проверяем наличие файла .env
+
     - name: Deploy to VDS
       uses: appleboy/ssh-action@master
       with:
