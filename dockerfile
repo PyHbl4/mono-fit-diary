@@ -10,6 +10,9 @@ COPY apps/fitdiary-api/package*.json ./
 # Устанавливаем зависимости
 RUN npm install --production
 
+# Генерируем Prisma Client
+RUN npx prisma generate
+
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
 
