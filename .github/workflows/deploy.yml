@@ -32,7 +32,7 @@ jobs:
         port: ${{ secrets.VDS_PORT }}
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
-        source: "apps/fitdiary-api/dist/*, apps/fitdiary-api/docker-compose.yml"
+        source: "apps/fitdiary-api/dist/*, docker-compose.yml"
         target: "~/fit-diary-api"
 
     - name: Create .env file on VDS
@@ -58,8 +58,8 @@ jobs:
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
           cd ~/fit-diary-api
-          ls -la  # Выводим содержимое директории
-          cat .env  # Проверяем наличие файла .env
+          ls -la
+          cat docker-compose.yml
 
     - name: Deploy to VDS
       uses: appleboy/ssh-action@master
