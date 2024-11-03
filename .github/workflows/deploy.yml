@@ -33,7 +33,7 @@ jobs:
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
         source: "dist/*"
-        target: "/apps/fitdiary-api"
+        target: "/fit-diary-api"
 
     - name: Create .env file
       run: |
@@ -49,7 +49,7 @@ jobs:
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
-          cd /apps/fitdiary-api
+          cd /fit-diary-api
           ls -la
           cat .env
           docker-compose config
