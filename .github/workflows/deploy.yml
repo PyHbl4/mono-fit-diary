@@ -33,7 +33,7 @@ jobs:
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
         source: "apps/fitdiary-api/dist/*"
-        target: "/fit-diary-api"
+        target: "~/fit-diary-api"
 
     - name: Create .env file
       run: |
