@@ -58,6 +58,14 @@ jobs:
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
           cd ~/fit-diary-api
-          docker compose config
           docker compose down
-          docker compose up --build -d
+          docker compose up -d
+          
+          # Ждем, пока PostgreSQL будет доступен
+          until docker exec pg-fitdiary pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+
+          # Выполняем миграции
+          docker exec fitdiary-api npx prisma migrate deploy
