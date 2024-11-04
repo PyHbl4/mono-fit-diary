@@ -17,7 +17,7 @@ COPY .env ./
 RUN npm install --production
 
 # Копируем файл схемы Prisma
-COPY apps/fitdiary-api/prisma/* ./prisma
+COPY apps/fitdiary-api/prisma ./prisma
 
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
