@@ -3,15 +3,15 @@ services:
     image: postgres:17
     container_name: pg-fitdiary
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  # Убедитесь, что переменная окружения DB_PASSWORD установлена
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5432:5432"  # Порт для доступа к PostgreSQL
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]  # Проверка доступности базы данных
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,20 +22,19 @@ services:
       dockerfile: Dockerfile
     container_name: fitdiary-api
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Порт для доступа к API
     environment:
-      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD}@postgres:5432/fitdiary?schema=public
-      - JWT_SECRET=${JWT_SECRET}
+      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD}@postgres:5432/fitdiary?schema=public  # Убедитесь, что переменная окружения DB_PASSWORD установлена
+      - JWT_SECRET=${JWT_SECRET}  # Убедитесь, что переменная окружения JWT_SECRET установлена
       - NODE_ENV=production
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_healthy  # Зависимость от состояния контейнера PostgreSQL
     restart: unless-stopped
     deploy:
       resources:
         limits:
-          memory: 1G
-    command: sh -c "npx prisma migrate deploy && node dist/main.js"
+          memory: 1G  # Ограничение по памяти для контейнера API
 
 volumes:
-  pgdata:
+  pgdata:  # Объем для хранения данных PostgreSQL

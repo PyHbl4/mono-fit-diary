@@ -19,7 +19,8 @@ COPY apps/fitdiary-api/prisma/* ./prisma
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
 
-RUN npx prisma migrate deploy
+# Проверяем доступность базы данных перед миграцией
+RUN until npx prisma migrate deploy; do echo "Waiting for database..."; sleep 5; done
 
 # Генерируем Prisma Client
 RUN npx prisma generate
