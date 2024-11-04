@@ -13,11 +13,14 @@ RUN npm install --production
 # Копируем файл схемы Prisma
 COPY apps/fitdiary-api/prisma/schema.prisma ./prisma/schema.prisma
 
-# Генерируем Prisma Client
-RUN npx prisma generate
-
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
+
+# Применяем миграции
+RUN npx prisma migrate deploy
+
+# Генерируем Prisma Client
+RUN npx prisma generate
 
 # Открываем порт, на котором будет работать приложение
 EXPOSE 3000
