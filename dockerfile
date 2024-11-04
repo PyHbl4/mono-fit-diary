@@ -13,11 +13,12 @@ COPY .env ./
 # Устанавливаем зависимости
 RUN npm install --production
 
+# Копируем файл схемы Prisma
+COPY apps/fitdiary-api/prisma/prisma.schema ./prisma
+
 # Создаем директорию для миграций, если она не существует
 RUN mkdir -p ./prisma/migrations
 
-# Копируем файл схемы Prisma
-COPY apps/fitdiary-api/prisma/prisma.schema ./prisma
 # Копируем миграции в созданную директорию
 COPY apps/fitdiary-api/prisma/migrations/ ./prisma/migrations
 
