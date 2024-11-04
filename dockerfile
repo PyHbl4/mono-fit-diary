@@ -22,6 +22,8 @@ COPY apps/fitdiary-api/prisma/migrations ./prisma/migrations
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
 
+RUN npx prisma generate
+
 # Открываем порт, на котором будет работать приложение
 EXPOSE 3000
 
