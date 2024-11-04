@@ -19,6 +19,8 @@ COPY apps/fitdiary-api/prisma/* ./prisma
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
 
+RUN npx prisma migrate deploy
+
 # Генерируем Prisma Client
 RUN npx prisma generate
 
