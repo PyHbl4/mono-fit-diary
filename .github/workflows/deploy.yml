@@ -59,7 +59,7 @@ jobs:
         script: |
           cd ~/fit-diary-api
           docker compose down
-          docker compose up -d
+          docker compose up -d --build
           
           # Ждем, пока PostgreSQL будет доступен
           until docker exec pg-fitdiary pg_isready -U postgres; do
