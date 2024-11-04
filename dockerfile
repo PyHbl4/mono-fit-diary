@@ -10,9 +10,6 @@ COPY apps/fitdiary-api/package*.json ./
 # Копируем .env файл
 COPY .env ./
 
-# RUN echo ".env: "
-# RUN cat .env
-
 # Устанавливаем зависимости
 RUN npm install --production
 
@@ -21,14 +18,6 @@ COPY apps/fitdiary-api/prisma ./prisma
 
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
-
-# RUN echo $DATABASE_URL
-
-# Проверяем доступность базы данных перед миграцией
-# RUN npx prisma migrate deploy
-
-# Генерируем Prisma Client
-RUN npx prisma generate
 
 # Открываем порт, на котором будет работать приложение
 EXPOSE 3000
