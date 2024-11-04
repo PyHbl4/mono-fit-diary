@@ -49,18 +49,6 @@ jobs:
           echo "DATABASE_URL=postgresql://postgres:${{ secrets.DB_PASSWORD }}@postgres:5432/fitdiary?schema=public" >> .env
           echo "PORT=3000" >> .env
 
-    - name: Check files in target directory
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VDS_HOST }}
-        port: ${{ secrets.VDS_PORT }}
-        username: ${{ secrets.VDS_USERNAME }}
-        key: ${{ secrets.VDS_SSH_KEY }}
-        script: |
-          cd ~/fit-diary-api
-          ls -la
-          cat docker-compose.yml
-
     - name: Deploy to VDS
       uses: appleboy/ssh-action@master
       with:
