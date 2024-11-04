@@ -14,6 +14,7 @@ export class UsersController {
       if (error instanceof ConflictException) {
         throw error;
       }
+      console.log(error);
       throw new BadRequestException('Не удалось зарегистрировать пользователя');
     }
   }
