@@ -49,6 +49,17 @@ jobs:
           echo "DATABASE_URL=postgresql://postgres:${{ secrets.DB_PASSWORD }}@postgres:5432/fitdiary?schema=public" >> .env
           echo "PORT=3000" >> .env
 
+    - name: Fix permissions on VDS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VDS_HOST }}
+        port: ${{ secrets.VDS_PORT }}
+        username: ${{ secrets.VDS_USERNAME }}
+        key: ${{ secrets.VDS_SSH_KEY }}
+        script: |
+          sudo chown -R 1000:1000 ~/fit-diary-api/server-pgdata/pgdata
+          sudo chmod -R 755 ~/fit-diary-api/server-pgdata/pgdata
+
     - name: Check files in target directory
       uses: appleboy/ssh-action@master
       with:
@@ -73,4 +84,3 @@ jobs:
           docker compose config
           docker compose down
           docker compose up --build -d
-          docker compose exec -T api npx prisma migrate deploy
