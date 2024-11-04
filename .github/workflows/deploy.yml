@@ -46,7 +46,7 @@ jobs:
           cd ~/fit-diary-api
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "DATABASE_URL=postgresql://postgres:${{ secrets.DB_PASSWORD }}@postgres:5432/fitdiary?schema=public" >> .env
           echo "PORT=3000" >> .env
 
     - name: Check files in target directory
