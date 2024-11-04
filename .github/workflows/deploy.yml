@@ -70,8 +70,6 @@ jobs:
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
           cd ~/fit-diary-api
-          ls -la
-          cat .env
           docker compose config
           docker compose down
           docker compose up --build -d
