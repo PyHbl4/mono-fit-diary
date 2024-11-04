@@ -32,7 +32,7 @@ jobs:
         port: ${{ secrets.VDS_PORT }}
         username: ${{ secrets.VDS_USERNAME }}
         key: ${{ secrets.VDS_SSH_KEY }}
-        source: "apps/fitdiary-api/dist/*, docker-compose.yml, dockerfile, apps/fitdiary-api/package.json, apps/fitdiary-api/prisma/*"
+        source: "apps/fitdiary-api/dist/*, docker-compose.yml, dockerfile, apps/fitdiary-api/package.json, apps/fitdiary-api/prisma/**"
         target: "~/fit-diary-api"
 
     - name: Create .env file on VDS
