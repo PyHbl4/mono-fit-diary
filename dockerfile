@@ -7,6 +7,9 @@ WORKDIR /app
 # Копируем package.json и package-lock.json (или yarn.lock) для установки зависимостей
 COPY apps/fitdiary-api/package*.json ./
 
+# Копируем .env файл
+COPY .env ./
+
 # Устанавливаем зависимости
 RUN npm install --production
 
