@@ -18,7 +18,8 @@ RUN mkdir -p ./prisma/migrations
 
 # Копируем файл схемы Prisma
 COPY apps/fitdiary-api/prisma/prisma.schema ./prisma
-COPY apps/fitdiary-api/prisma/migrations/* ./prisma/migrations
+# Копируем миграции в созданную директорию
+COPY apps/fitdiary-api/prisma/migrations/ ./prisma/migrations
 
 # Копируем собранные файлы из локальной директории
 COPY apps/fitdiary-api/dist ./dist
