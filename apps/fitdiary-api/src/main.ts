@@ -6,9 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('api');
-  const config = new DocumentBuilder().setTitle('fitness API').setDescription('API for fitDiary').setVersion('1.0').build();
+  const config = new DocumentBuilder().setTitle('fitness API').setDescription('API for fitDiary').setVersion('1.0').addTag('users').addBearerAuth().build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   await app.listen(3000);
 }
 bootstrap();
