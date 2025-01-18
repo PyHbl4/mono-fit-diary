@@ -1,16 +1,21 @@
 import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SetsService } from './sets.service';
 import { Prisma } from '@prisma/client';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiResponse } from '@nestjs/swagger';
 import { CreateSetDto } from './dto/create-set.dto';
 import { UpdateSetDto } from './dto/update-set.dto';
 
 @Controller('sets')
+@ApiHeader({ name: 'Authorization', required: true, description: 'Bearer token', example: 'Bearer token' })
 export class SetsController {
   constructor(private readonly setsService: SetsService) {}
 
   @Post()
   @ApiBody({
+    type: CreateSetDto,
+  })
+  @ApiResponse({
+    status: 200,
     type: CreateSetDto,
   })
   create(@Body() data: Prisma.SetsCreateInput) {

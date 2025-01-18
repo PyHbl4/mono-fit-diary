@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/commo
 import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../users/users.service'; // Предполагается, что у вас есть сервис для работы с пользователями
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class WithAuthMiddleware implements NestMiddleware {
@@ -16,7 +16,7 @@ export class WithAuthMiddleware implements NestMiddleware {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
-      const token = authHeader.split(' ')[1]; // Предполагается, что токен передается в формате "Bearer <token>"
+      const token = authHeader.split(' ')[1];
 
       try {
         const secret = this.configService.get<string>('JWT_SECRET');
