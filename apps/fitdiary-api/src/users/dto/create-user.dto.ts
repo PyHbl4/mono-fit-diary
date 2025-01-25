@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateWorkoutDto } from 'src/workouts/dto/create-workout.dto';
+// import { CreateWorkoutDto } from 'src/workouts/dto/create-workout.dto';
 
 export class CreateUserDto {
   @ApiProperty({ type: 'string', example: 'D.Runich', required: true })
@@ -43,15 +43,15 @@ export class ReturnedUserDto {
   @ApiProperty({ type: 'string', example: '2024-11-04 13:17:03.886', required: false })
   birthDate: Date;
 
-  @ApiProperty({ type: 'array', example: [] })
-  workouts: CreateWorkoutDto[];
+  // @ApiProperty({ type: 'array', example: [] })
+  // workouts: CreateWorkoutDto[];
 
-  @ApiProperty({ type: 'array', example: [] })
-  weightData: string[];
+  // @ApiProperty({ type: 'array', example: [] })
+  // weightData: string[];
 
-  @ApiProperty({ type: 'array', example: [] })
-  exerciseGroups: string[];
+  // @ApiProperty({ type: 'array', example: [] })
+  // exerciseGroups: string[];
 
-  @ApiProperty({ type: 'array', example: [] })
-  exercises: string[];
+  // @ApiProperty({ type: 'array', example: [] })
+  // exercises: string[];
 }
