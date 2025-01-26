@@ -23,31 +23,35 @@ export class UsersService {
   }
 
   async getMyUser(userId: string): Promise<Partial<Users>> {
-    const user = await this.prisma.users.findUnique({
-      where: { uuid: userId },
-      // include: {
-      //   weightData: {
-      //     orderBy: {
-      //       date: 'desc',
-      //     },
-      //   },
-      //   workouts: {
-      //     orderBy: {
-      //       date: 'desc',
-      //     },
-      //   },
-      //   exercises: true,
-      //   exerciseGroups: {
-      //     orderBy: {
-      //       createdAt: 'desc',
-      //     },
-      //     include: {
-      //       exercises: true,
-      //     },
-      //   },
-      // },
-    });
-    return user ? omitHiddenProps(user, Entities.Users) : null;
+    try {
+      const user = await this.prisma.users.findUnique({
+        where: { uuid: userId },
+        // include: {
+        //   weightData: {
+        //     orderBy: {
+        //       date: 'desc',
+        //     },
+        //   },
+        //   workouts: {
+        //     orderBy: {
+        //       date: 'desc',
+        //     },
+        //   },
+        //   exercises: true,
+        //   exerciseGroups: {
+        //     orderBy: {
+        //       createdAt: 'desc',
+        //     },
+        //     include: {
+        //       exercises: true,
+        //     },
+        //   },
+        // },
+      });
+      return user ? omitHiddenProps(user, Entities.Users) : null;
+    } catch (error) {
+      throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to get user');
+    }
   }
 
   async users(params: {

@@ -21,6 +21,9 @@ import { ExercisesModule } from './exercises/exercises.module';
 import { ExercisesController } from './exercises/exercises.controller';
 import { WeightDataController } from './weight-data/weight-data.controller';
 import { WeightDataService } from './weight-data/weight-data.service';
+import { ExGroupsController } from './ex-groups/ex-groups.controller';
+import { ExercisesService } from './exercises/exercises.service';
+import { ExGroupsService } from './ex-groups/ex-groups.service';
 
 @Module({
   imports: [
@@ -36,12 +39,16 @@ import { WeightDataService } from './weight-data/weight-data.service';
     ExGroupsModule,
     WeightDataModule,
     ExercisesModule,
+    ExGroupsModule,
   ],
-  controllers: [UsersController, AuthController, WorkoutsController, SetsController, WeightDataController],
-  providers: [UsersService, PrismaService, WithAuthMiddleware, WorkoutsService, SetsService, WeightDataService],
+  controllers: [UsersController, AuthController, WorkoutsController, SetsController, WeightDataController, ExercisesController, ExGroupsController],
+  providers: [UsersService, PrismaService, WithAuthMiddleware, WorkoutsService, SetsService, WeightDataService, ExercisesService, ExGroupsService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(WithAuthMiddleware).exclude('users/register', 'auth/login').forRoutes(UsersController, WorkoutsController, SetsController, ExercisesController, WeightDataController);
+    consumer
+      .apply(WithAuthMiddleware)
+      .exclude('users/register', 'auth/login')
+      .forRoutes(UsersController, WorkoutsController, SetsController, ExercisesController, ExGroupsController, WeightDataController);
   }
 }

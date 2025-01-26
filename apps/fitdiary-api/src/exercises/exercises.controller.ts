@@ -16,6 +16,12 @@ export class ExercisesController {
     return this.exercisesService.findAllByUser(req.user.uuid);
   }
 
+  @Get('/:uuid')
+  @ApiResponse({ status: 200, description: 'Упражнение юзера', type: CreateExerciseDto })
+  async findOne(@Req() req: Request & { user: Users }, @Param('uuid') uuid: string) {
+    return this.exercisesService.findOne(req.user.uuid, uuid);
+  }
+
   @Post('/')
   @ApiBody({ type: CreateExerciseDto })
   @ApiResponse({ status: 201, description: 'Упражнение создано', type: CreateExerciseDto })
@@ -27,11 +33,11 @@ export class ExercisesController {
   @ApiBody({ type: UpdateExerciseDto })
   @ApiResponse({ status: 200, description: 'Упражнение обновлено', type: CreateExerciseDto })
   async update(@Req() req: Request & { user: Users }, @Param('uuid') uuid: string, @Body() data: Prisma.ExercisesUpdateInput) {
-    return this.exercisesService.update(uuid, data);
+    return this.exercisesService.update(req.user.uuid, uuid, data);
   }
 
   @Delete('/:uuid')
   async delete(@Req() req: Request & { user: Users }, @Param('uuid') uuid: string) {
-    return this.exercisesService.delete(uuid);
+    return this.exercisesService.delete(req.user.uuid, uuid);
   }
 }

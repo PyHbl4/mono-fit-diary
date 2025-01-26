@@ -51,7 +51,7 @@ model Workouts {
 model Exercises {
   uuid        String   @id @default(uuid())
   name        String
-  description String
+  description String?
   userId      String
   user        Users    @relation(fields: [userId], references: [uuid])
   createdAt   DateTime @default(now())
@@ -85,7 +85,7 @@ model WeightData {
 model ExerciseGroups {
   uuid        String   @id @default(uuid())
   name        String
-  description String
+  description String?
   userId      String
   user        Users    @relation(fields: [userId], references: [uuid])
   createdAt   DateTime @default(now())

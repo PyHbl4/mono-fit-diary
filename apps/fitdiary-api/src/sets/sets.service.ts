@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 
@@ -6,30 +6,34 @@ import { PrismaService } from '../prisma.service';
 export class SetsService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: Prisma.SetsCreateInput) {
-    return this.prisma.sets.create({
-      data: data,
-    });
+  async create(data: Prisma.SetsCreateInput) {
+    try {
+      return await this.prisma.sets.create({
+        data: data,
+      });
+    } catch (error) {
+      throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to create set');
+    }
   }
 
-  // findAllByWorkout(workoutId: string) {
-  //   return this.prisma.sets.findMany({
-  //     where: {
-  //       workoutId: workoutId,
-  //     },
-  //   });
-  // }
-
-  update(uuid: string, data: Prisma.SetsUpdateInput) {
-    return this.prisma.sets.update({
-      where: { uuid: uuid },
-      data: data,
-    });
+  async update(uuid: string, data: Prisma.SetsUpdateInput) {
+    try {
+      return this.prisma.sets.update({
+        where: { uuid: uuid },
+        data: data,
+      });
+    } catch (error) {
+      throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to update set');
+    }
   }
 
-  remove(uuid: string) {
-    return this.prisma.sets.delete({
-      where: { uuid: uuid },
-    });
+  async remove(uuid: string) {
+    try {
+      return this.prisma.sets.delete({
+        where: { uuid: uuid },
+      });
+    } catch (error) {
+      throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to delete set');
+    }
   }
 }

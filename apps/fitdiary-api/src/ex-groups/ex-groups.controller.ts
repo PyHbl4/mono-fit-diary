@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { ExGroupsService } from './ex-groups.service';
 import { CreateExGroupDto } from './dto/create-ex-group.dto';
 import { UpdateExGroupDto } from './dto/update-ex-group.dto';
 import { ApiBody, ApiHeader, ApiResponse } from '@nestjs/swagger';
+import { Prisma, Users } from '@prisma/client';
 
 @Controller('ex-groups')
 @ApiHeader({ name: 'Authorization', required: true, description: 'Bearer token', example: 'Bearer token' })
@@ -16,8 +17,8 @@ export class ExGroupsController {
     description: 'The exGroup has been successfully created.',
     type: CreateExGroupDto,
   })
-  create(@Body() createExGroupDto: CreateExGroupDto) {
-    return this.exGroupsService.create(createExGroupDto);
+  async create(@Req() req: Request & { user: Users }, @Body() data: Prisma.ExerciseGroupsCreateInput) {
+    return this.exGroupsService.create(req.user.uuid, data);
   }
 
   @Get()
@@ -25,8 +26,8 @@ export class ExGroupsController {
     status: 200,
     type: [CreateExGroupDto],
   })
-  findAll() {
-    return this.exGroupsService.findAll();
+  findAllByUser(@Req() req: Request & { user: Users }) {
+    return this.exGroupsService.findAllByUser(req.user.uuid);
   }
 
   @Get(':id')
@@ -34,17 +35,18 @@ export class ExGroupsController {
     status: 200,
     type: CreateExGroupDto,
   })
-  findOne(@Param('id') id: string) {
-    return this.exGroupsService.findOne(+id);
+  findOne(@Param('id') uuid: string, @Body() req: Request & { user: Users }) {
+    return this.exGroupsService.findOne(req.user.uuid, uuid);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExGroupDto: UpdateExGroupDto) {
-    return this.exGroupsService.update(+id, updateExGroupDto);
+  @Patch(':uuid')
+  @ApiBody({ type: UpdateExGroupDto })
+  update(@Param('uuid') uuid: string, @Body() req: Request & { user: Users }, data: Prisma.ExerciseGroupsUpdateInput) {
+    return this.exGroupsService.update(req.user.uuid, uuid, data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.exGroupsService.remove(+id);
+  remove(@Param('id') uuid: string, @Body() req: Request & { user: Users }) {
+    return this.exGroupsService.delete(req.user.uuid, uuid);
   }
 }
