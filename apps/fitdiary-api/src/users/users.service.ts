@@ -74,12 +74,16 @@ export class UsersService {
 
   async updateUser(params: { where: Prisma.UsersWhereUniqueInput; data: Prisma.UsersUpdateInput }): Promise<Partial<Users>> {
     const { where, data } = params;
-    const { name } = data; // будем ограничивать поля, которые можно менять
+    const { name, birthDate, gender } = data; // будем ограничивать поля, которые можно менять
     if (!name) {
       throw new BadRequestException('Имя не может быть пустым');
     }
     const user = await this.prisma.users.update({
-      data: { name },
+      data: {
+        name,
+        birthDate,
+        gender,
+      },
       where,
     });
     return omitHiddenProps(user, Entities.Users);
