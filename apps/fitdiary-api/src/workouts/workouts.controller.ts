@@ -20,6 +20,16 @@ export class WorkoutsController {
     return this.workoutsService.findAllByUser(req.user.uuid);
   }
 
+  @Get('/:uuid')
+  @ApiResponse({
+    status: 200,
+    type: CreateWorkoutDto,
+    description: 'Возвращает тренировку с сетами',
+  })
+  async findOne(@Param('uuid') uuid: string, @Req() req: Request & { user: Users }) {
+    return this.workoutsService.findOne(req.user.uuid, uuid);
+  }
+
   @Post('/')
   @ApiBody({
     type: CreateWorkoutDto,
@@ -34,7 +44,7 @@ export class WorkoutsController {
     return this.workoutsService.createWorkout(req.user.uuid, data);
   }
 
-  @Patch('/:id')
+  @Patch('/:uuid')
   @ApiBody({
     type: UpdateWorkoutDto,
   })
@@ -43,8 +53,8 @@ export class WorkoutsController {
     type: CreateWorkoutDto,
     description: 'Возвращает обновленную тренировку с сетами',
   })
-  async update(@Param('id') id: string, @Body() data: Prisma.WorkoutsUpdateInput & { sets?: Prisma.SetsCreateInput[] }, @Req() req: Request & { user: Users }) {
-    return this.workoutsService.updateWorkout(id, req.user.uuid, data);
+  async update(@Param('uuid') uuid: string, @Body() data: Prisma.WorkoutsUpdateInput & { sets?: Prisma.SetsCreateInput[] }, @Req() req: Request & { user: Users }) {
+    return this.workoutsService.updateWorkout(uuid, req.user.uuid, data);
   }
 
   @Delete('/:id')

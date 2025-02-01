@@ -28,6 +28,31 @@ export class WorkoutsService {
     }
   }
 
+  async findOne(userId: string, uuid: string): Promise<Workouts> {
+    try {
+      console.log(uuid);
+      const workout = await this.prisma.workouts.findUnique({
+        where: { uuid: uuid },
+        include: {
+          sets: {
+            include: {
+              exercise: true,
+            },
+          },
+        },
+      });
+      if (!workout) {
+        throw new BadRequestException('Workout not found');
+      }
+      if (workout.userId !== userId) {
+        throw new BadRequestException('Not authorized');
+      }
+      return workout;
+    } catch (error) {
+      throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to find workout');
+    }
+  }
+
   async createWorkout(userId: string, data: Prisma.WorkoutsCreateInput & { sets: Prisma.SetsCreateInput[] }): Promise<Workouts & { sets: Sets[] }> {
     try {
       if (!data.date) {
