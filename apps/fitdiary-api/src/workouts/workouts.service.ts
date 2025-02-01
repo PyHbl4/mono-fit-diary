@@ -30,7 +30,6 @@ export class WorkoutsService {
 
   async findOne(userId: string, uuid: string): Promise<Workouts> {
     try {
-      console.log(uuid);
       const workout = await this.prisma.workouts.findUnique({
         where: { uuid: uuid },
         include: {
@@ -53,7 +52,7 @@ export class WorkoutsService {
     }
   }
 
-  async createWorkout(userId: string, data: Prisma.WorkoutsCreateInput & { sets: Prisma.SetsCreateInput[] }): Promise<Workouts & { sets: Sets[] }> {
+  async createWorkout(userId: string, data: Prisma.WorkoutsCreateInput & { sets?: Prisma.SetsCreateInput[] }): Promise<Workouts & { sets: Sets[] }> {
     try {
       if (!data.date) {
         data.date = new Date();
@@ -83,6 +82,8 @@ export class WorkoutsService {
   }
 
   async updateWorkout(workoutId: string, userId: string, data: Prisma.WorkoutsUpdateInput & { sets?: Prisma.SetsCreateInput[] }): Promise<Workouts> {
+    console.log('updateWorkout.data: ', data);
+
     try {
       const workout = await this.prisma.workouts.findUnique({
         where: { uuid: workoutId },
