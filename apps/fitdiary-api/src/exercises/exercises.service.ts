@@ -57,7 +57,7 @@ export class ExercisesService {
     }
   }
 
-  async update(userId: string, uuid: string, data: Prisma.ExercisesUpdateInput): Promise<Exercises> {
+  async update(userId: string, uuid: string, data: Prisma.ExercisesUpdateInput & { exerciseGroupId: string }): Promise<Exercises> {
     try {
       const exercise = await this.prisma.exercises.findUnique({ where: { uuid: uuid } });
       if (!exercise) {
@@ -68,7 +68,11 @@ export class ExercisesService {
       }
       return this.prisma.exercises.update({
         where: { uuid: uuid },
-        data: data,
+        data: {
+          name: data.name,
+          description: data.description,
+          exerciseGroupId: data.exerciseGroupId,
+        },
         include: {
           exerciseGroup: true,
         },

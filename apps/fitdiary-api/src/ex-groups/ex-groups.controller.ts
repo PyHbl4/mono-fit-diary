@@ -30,23 +30,23 @@ export class ExGroupsController {
     return this.exGroupsService.findAllByUser(req.user.uuid);
   }
 
-  @Get(':id')
+  @Get(':uuid')
   @ApiResponse({
     status: 200,
     type: CreateExGroupDto,
   })
-  findOne(@Param('id') uuid: string, @Body() req: Request & { user: Users }) {
+  findOne(@Param('uuid') uuid: string, @Req() req: Request & { user: Users }) {
     return this.exGroupsService.findOne(req.user.uuid, uuid);
   }
 
   @Patch(':uuid')
   @ApiBody({ type: UpdateExGroupDto })
-  update(@Param('uuid') uuid: string, @Body() req: Request & { user: Users }, data: Prisma.ExerciseGroupsUpdateInput) {
+  update(@Param('uuid') uuid: string, @Req() req: Request & { user: Users }, @Body() data: Prisma.ExerciseGroupsUpdateInput) {
     return this.exGroupsService.update(req.user.uuid, uuid, data);
   }
 
   @Delete(':id')
-  remove(@Param('id') uuid: string, @Body() req: Request & { user: Users }) {
+  remove(@Param('id') uuid: string, @Req() req: Request & { user: Users }) {
     return this.exGroupsService.delete(req.user.uuid, uuid);
   }
 }

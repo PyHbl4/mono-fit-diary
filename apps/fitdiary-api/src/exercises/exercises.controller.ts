@@ -32,7 +32,7 @@ export class ExercisesController {
   @Patch('/:uuid')
   @ApiBody({ type: UpdateExerciseDto })
   @ApiResponse({ status: 200, description: 'Упражнение обновлено', type: ReturningExerciseDto })
-  async update(@Req() req: Request & { user: Users }, @Param('uuid') uuid: string, @Body() data: Prisma.ExercisesUpdateInput) {
+  async update(@Req() req: Request & { user: Users }, @Param('uuid') uuid: string, @Body() data: Prisma.ExercisesUpdateInput & { exerciseGroupId: string }) {
     return this.exercisesService.update(req.user.uuid, uuid, data);
   }
 
