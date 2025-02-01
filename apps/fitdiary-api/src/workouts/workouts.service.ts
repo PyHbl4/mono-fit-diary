@@ -135,6 +135,11 @@ export class WorkoutsService {
       if (!workout || workout.userId !== userId) {
         throw new Error('Нет прав на удаление этой тренировки');
       }
+      await this.prisma.sets.deleteMany({
+        where: {
+          workoutId: workoutId,
+        },
+      });
       return this.prisma.workouts.delete({
         where: {
           uuid: workoutId,
