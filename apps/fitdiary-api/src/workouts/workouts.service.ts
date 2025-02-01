@@ -96,23 +96,36 @@ export class WorkoutsService {
 
       const { sets, ...workoutData } = data;
 
-      return this.prisma.workouts.update({
+      // Update the workout
+      await this.prisma.workouts.update({
         where: {
           uuid: workoutId,
         },
-        data: {
-          ...workoutData,
-          sets: sets
-            ? {
-                deleteMany: {},
-                create: sets.map((set) => ({
-                  ...set,
-                  exercise: {
-                    connect: { uuid: set.exercise as string },
-                  },
-                })),
-              }
-            : undefined,
+        data: workoutData,
+      });
+
+      // Update the sets
+      if (sets) {
+        // Delete all existing sets
+        await this.prisma.sets.deleteMany({
+          where: {
+            workoutId: workout.uuid,
+          },
+        });
+
+        // Create new sets
+        await this.prisma.sets.createMany({
+          data: sets.map((set) => ({
+            workoutId: workout.uuid,
+            exerciseId: set.exercise as string,
+            counts: set.counts,
+          })),
+        });
+      }
+
+      return this.prisma.workouts.findUnique({
+        where: {
+          uuid: workoutId,
         },
         include: {
           sets: {
