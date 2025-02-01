@@ -12,6 +12,9 @@ export class ExercisesService {
         where: {
           userId: userId,
         },
+        include: {
+          exerciseGroup: true,
+        },
       });
     } catch (error) {
       throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to find exercises');
@@ -20,7 +23,7 @@ export class ExercisesService {
 
   async findOne(userId: string, uuid: string): Promise<Exercises> {
     try {
-      const exercise = await this.prisma.exercises.findUnique({ where: { uuid: uuid } });
+      const exercise = await this.prisma.exercises.findUnique({ where: { uuid: uuid }, include: { exerciseGroup: true } });
       if (!exercise) {
         throw new NotFoundException('Exercise not found');
       }
@@ -33,14 +36,19 @@ export class ExercisesService {
     }
   }
 
-  async create(userId: string, data: Prisma.ExercisesCreateInput): Promise<Exercises> {
+  async create(userId: string, data: Prisma.ExercisesCreateInput & { exerciseGroupId: string }): Promise<Exercises> {
     try {
       const exercise = await this.prisma.exercises.create({
         data: {
-          ...data,
+          name: data.name,
+          description: data.description,
           user: {
             connect: { uuid: userId },
           },
+          ...(data.exerciseGroupId && { exerciseGroup: { connect: { uuid: data.exerciseGroupId } } }),
+        },
+        include: {
+          exerciseGroup: true,
         },
       });
       return exercise;
@@ -61,6 +69,9 @@ export class ExercisesService {
       return this.prisma.exercises.update({
         where: { uuid: uuid },
         data: data,
+        include: {
+          exerciseGroup: true,
+        },
       });
     } catch (error) {
       throw new BadRequestException(error?.message?.split('\n').pop() || 'Failed to update exercise');

@@ -13,8 +13,8 @@ export class CreateWorkoutDto {
   })
   sets: CreateSetDto[];
 
-  @ApiProperty({ type: 'string', example: 'uuid' })
-  userId: string;
+  // @ApiProperty({ type: 'string', example: 'uuid (можно не передавать, бэк вытащит из авторизации', required: false })
+  // userId: string;
 
   @ApiProperty({ type: 'string', example: 'Chest day' })
   name: string;
