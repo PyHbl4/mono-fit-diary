@@ -81,7 +81,7 @@ export class WorkoutsService {
     }
   }
 
-  async updateWorkout(workoutId: string, userId: string, data: Prisma.WorkoutsUpdateInput & { sets?: Prisma.SetsCreateInput[] }): Promise<Workouts> {
+  async updateWorkout(workoutId: string, userId: string, data: Prisma.WorkoutsUpdateInput & { sets?: Prisma.SetsUncheckedUpdateInput[] }): Promise<Workouts> {
     console.log('updateWorkout.data: ', data);
 
     try {
@@ -117,7 +117,7 @@ export class WorkoutsService {
         await this.prisma.sets.createMany({
           data: sets.map((set) => ({
             workoutId: workout.uuid,
-            exerciseId: set.exercise as string,
+            exerciseId: set.exerciseId as string,
             counts: set.counts,
           })),
         });
