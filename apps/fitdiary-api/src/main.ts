@@ -13,6 +13,6 @@ async function bootstrap() {
       persistAuthorization: true,
     },
   });
-  await app.listen(3000);
+  await app.listen(process.env.port || 3200);
 }
 bootstrap();
