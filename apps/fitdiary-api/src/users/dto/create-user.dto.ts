@@ -1,26 +1,40 @@
 import { ApiProperty } from '@nestjs/swagger';
-// import { CreateWorkoutDto } from 'src/workouts/dto/create-workout.dto';
+import { IsString, IsNotEmpty, IsEmail, IsOptional, IsDateString } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({ type: 'string', example: 'D.Runich', required: true })
+  @IsString()
+  @IsNotEmpty()
   login: string;
 
   @ApiProperty({ type: 'string', example: 'password', required: true })
+  @IsString()
+  @IsNotEmpty()
   password: string;
 
-  @ApiProperty({ type: 'string', example: 'runich@mail.ru', required: false })
+  @ApiProperty({ type: 'string', example: 'runich@mail.ru', required: true })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @ApiProperty({ type: 'string', example: '79122536985', required: false })
+  @IsOptional()
+  @IsString()
   phone: string;
 
   @ApiProperty({ type: 'string', example: 'Dmitry', required: false })
-  name: string;
+  @IsOptional()
+  @IsString()
+  name?: string;
 
   @ApiProperty({ type: 'string', example: 'male || female', required: false })
+  @IsOptional()
+  @IsString()
   gender: string;
 
   @ApiProperty({ type: 'string', example: '2024-11-04 13:17:03.886', required: false })
+  @IsOptional()
+  @IsDateString()
   birthDate: Date;
 }
 

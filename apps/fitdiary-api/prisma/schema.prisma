@@ -16,11 +16,11 @@ datasource db {
 model Users {
   uuid      String @default(uuid()) @id
   login     String @unique
-  email     String? @unique
+  email     String @unique
   phone     String? @unique
   password  String
   scopes    String[]
-  name      String
+  name      String?
   gender    String?
   birthDate DateTime?
   sessionId String?
