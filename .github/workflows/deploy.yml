@@ -58,6 +58,7 @@ jobs:
         key: ${{ secrets.VDS_SSH_KEY }}
         script: |
           cd ~/fit-diary-api
+          docker image prune -f
           docker compose down
           docker compose up -d --build
           
