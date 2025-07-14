@@ -31,6 +31,17 @@ model Users {
   weightData WeightData[]
   exerciseGroups ExerciseGroups[]
   exercises Exercises[]
+  workoutTemplates WorkoutTemplate[]
+}
+
+model WorkoutTemplate {
+  uuid        String   @id @default(uuid())
+  name        String
+  userId      String
+  user        Users    @relation(fields: [userId], references: [uuid])
+  exercises   String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Workouts {
