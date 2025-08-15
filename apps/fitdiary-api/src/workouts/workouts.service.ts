@@ -94,14 +94,32 @@ export class WorkoutsService {
         throw new Error('Нет прав на редактирование этой тренировки');
       }
 
-      const { sets, ...workoutData } = data;
+      const { sets, ...rawWorkoutData } = data;
 
-      // Update the workout
+      // Очистка входных данных — оставляем только date, name, description
+      const sanitizedData: Prisma.WorkoutsUpdateInput = {};
+      if (rawWorkoutData.date instanceof Date) {
+        sanitizedData.date = rawWorkoutData.date;
+      }
+      if (typeof rawWorkoutData.name === 'string') {
+        sanitizedData.name = rawWorkoutData.name;
+      }
+      if (typeof rawWorkoutData.description === 'string') {
+        sanitizedData.description = rawWorkoutData.description;
+      }
+      if (rawWorkoutData.duration) {
+        sanitizedData.duration = rawWorkoutData.duration;
+      }
+      if (rawWorkoutData.calories) {
+        sanitizedData.calories = rawWorkoutData.calories;
+      }
+
+      // Обновляем тренировку
       await this.prisma.workouts.update({
         where: {
           uuid: workoutId,
         },
-        data: workoutData,
+        data: sanitizedData,
       });
 
       // Update the sets
